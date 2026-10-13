@@ -13,8 +13,29 @@
 		</header>
 		<main>
 			<input id="qr-content" type="text" placeholder="Type here">
+			<div>
+				<input id="qr-logo" type="file" accept="image/*">
+				<input id="qr-remove-logo" type="button" value="&#128465;">
+				<div>
+					<label for="qr-logo-size">Logo size</label>
+					<input id="qr-logo-size" type="range" min="5" max="30" value="20">
+					<output id="qr-logo-size-value">20</output>
+				</div>
+			</div>
+			<div>
+				<div>
+					<label for="qr-border-width">Border width</label>
+					<input id="qr-border-width" type="range" min="0" max="20" value="1">
+					<output id="qr-border-width-value">1</output>
+				</div>
+				<div>
+					<label for="qr-border-radius">Border radius</label>
+					<input id="qr-border-radius" type="range" min="0" max="20" value="3">
+					<output id="qr-border-radius-value">3</output>
+				</div>
+			</div>
+			<a id="qr-download" download="qr-code.svg">&#128190; SVG</a>
 			<div id="qr-code"></div>
-			<a id="qr-download" download="qr-code.svg" hidden>&#128190; SVG</a>
 		</main>
 		<footer>
 		</footer>

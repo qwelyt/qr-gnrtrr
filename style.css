@@ -1,3 +1,11 @@
+body{
+	background: #aaa;
+	font-family: sans-serif;
+}
+#qr-code {
+	height: 256px;
+	padding: 1em;
+}
 #qr-download {
 	display: inline-block;
 	padding: 0.5em 1em;
