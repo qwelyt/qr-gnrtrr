@@ -8,6 +8,7 @@ const logoInput = document.getElementById('qr-logo');
 const removeLogo = document.getElementById('qr-remove-logo');
 const logoSize = document.getElementById('qr-logo-size');
 const logoSizeValue = document.getElementById('qr-logo-size-value');
+const logoBgShapeInput = document.getElementById('qr-logo-bg-shape');
 const borderWidth = document.getElementById('qr-border-width');
 const borderWidthValue = document.getElementById('qr-border-width-value');
 const borderRadius = document.getElementById('qr-border-radius');
@@ -16,6 +17,7 @@ const output = document.getElementById('qr-code');
 const download = document.getElementById('qr-download');
 
 let logo = null;
+let logoBgShape = null;
 
 async function generateQR(txt) {
 	return QRCode.toString(txt, {
@@ -63,18 +65,47 @@ function addLogo(svg, logo, scale) {
 	let longest = size * scale;
 	let width = logo.ratio >= 1 ? longest : longest * logo.ratio;
 	let height = logo.ratio >= 1 ? longest / logo.ratio : longest;
+	let biggest = Math.max(width, height);
 	let x = (size - width)/2;
 	let y = (size - height)/2;
 	let padding = 0.5;
+	let bgCornerRadius = 2;
+
+	let shape = (() => {
+		switch(logoBgShape) {
+			case 'none':
+				return null;
+			case 'circle':
+				return svgElement('circle', {
+					cx: x+width/2,
+					cy: y+height/2,
+					r: biggest/2 + padding*2,
+					fill: '#fff',
+				});
+			case 'rounded-square':
+				return svgElement('rect', {
+					x: x-padding,
+					y: y-padding,
+					rx: bgCornerRadius,
+					ry: bgCornerRadius,
+					width: width + padding*2,
+					height: height + padding*2,
+					fill: '#fff',
+				});
+			case 'rect':
+			default:
+				return svgElement('rect', {
+					x: x-padding,
+					y: y-padding,
+					width: width + padding*2,
+					height: height + padding*2,
+					fill: '#fff',
+				});
+		}
+	})();
 
 	svg.append(
-		svgElement('rect', {
-			x: x-padding,
-			y: y-padding,
-			width: width + padding*2,
-			height: height + padding*2,
-			fill: '#fff',
-		}),
+		shape,
 		svgElement('image', {
 			x: x,
 			y: y,
@@ -147,6 +178,11 @@ logoInput.addEventListener('change', async () => {
 	} catch (err) {
 		console.error(err);
 	}
+	generate();
+});
+logoBgShapeInput.addEventListener('change', async(event) => {
+	logoBgShape = event.target.value;
+	console.log(event, logoBgShape)
 	generate();
 });
 borderWidth.addEventListener('input', async (event) => {
